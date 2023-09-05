@@ -9,7 +9,7 @@
 ######################################################################
 #
 #
-
+# shellcheck disable=SC2059
 
 # Use "set -x" to echo commands to stdout with variable expansion
 #set -x
@@ -23,12 +23,20 @@ brew reinstall -f openjdk@17
 
 jenv add /Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home
 
-printf '\n\n#############################\n' >> ~/.zshrc
-printf '### setup_kotlin.sh additions below\n' >> ~/.zshrc
-printf '#############################\n\n' >> ~/.zshrc
+{
+printf '\n\n#############################'
+printf '\n### setup_kotlin.sh additions below'
+printf '\n#############################\n\n\n'
 
-printf '# Make OpenJDK the first on the path\n' >> ~/.zshrc ;
-printf '"export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"\n'  >> ~/.zshrc ;
+echo '# Setup jenv'
+printf "eval \"\$(jenv init -)\""
+printf "\njenv enable-plugin export"
 
-printf '# For compilers to find openjdk@17 you may need to set:\n' >> ~/.zshrc
-printf 'export CPPFLAGS="-I/opt/homebrew/opt/openjdk@17/include"\n' >> ~/.zshrc
+printf '\n\n# Make OpenJDK the first on the path\n'
+echo "export PATH=\"/opt/homebrew/opt/openjdk@17/bin:$PATH\""
+
+printf '\n# For compilers to find openjdk@17 you may need to set:'
+printf '\nexport CPPFLAGS="-I/opt/homebrew/opt/openjdk@17/include"'
+} >> ~/.zshrc
+
+echo "Quit all your terminal windows to make sure you get the new shell config."
